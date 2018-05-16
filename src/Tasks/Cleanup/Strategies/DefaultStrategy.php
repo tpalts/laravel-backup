@@ -115,6 +115,12 @@ class DefaultStrategy extends CleanupStrategy
 
         $oldest->delete();
 
+        /*
+         * Added as bug fix. Bug caused all backups to be deleted if max size is deleted.
+         * src: https://github.com/spatie/laravel-backup/pull/562/files#diff-a10ab644c6ceb2edebd4264fb1b7b23e
+         * */
+        $backups = $backups->filter->exists();
+
         $this->removeOldBackupsUntilUsingLessThanMaximumStorage($backups);
     }
 }
